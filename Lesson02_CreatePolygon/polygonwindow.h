@@ -13,6 +13,8 @@ public:
 
     void initialize();
     void render();
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     GLuint m_posAttr;
     GLuint m_matrixUniform;

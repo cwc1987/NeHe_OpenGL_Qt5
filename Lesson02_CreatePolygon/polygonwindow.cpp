@@ -1,11 +1,12 @@
 #include "polygonwindow.h"
 
 static const char *triangleVertexShaderSource =
-    "attribute highp vec4 posAttr;\n"
-    "uniform highp mat4 matrix;\n"
-    "void main() {\n"
-    "   gl_Position = matrix * posAttr;\n"
-    "}\n";
+        "attribute highp vec4 posAttr;\n"
+        "attribute lowp vec4 colAttr;\n"
+        "uniform highp mat4 matrix;\n"
+        "void main() {\n"
+        "   gl_Position = matrix * posAttr;\n"
+        "}\n";
 
 static const char *triangleFFragmentShaderSource =
     "varying lowp vec4 col;\n"
@@ -69,4 +70,9 @@ void PolygonWindow::render()
     glDisableVertexAttribArray(0);
 
     m_program->release();
+}
+
+void PolygonWindow::resizeEvent(QResizeEvent *event)
+{
+
 }

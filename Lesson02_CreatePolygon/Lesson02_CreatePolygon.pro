@@ -20,3 +20,6 @@ SOURCES += main.cpp\
 HEADERS  += openglwindow.h \
     trianglewindow.h \
     polygonwindow.h
+
+RESOURCES += \
+    src.qrc

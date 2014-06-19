@@ -14,11 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         openglwindow.cpp \
-    trianglewindow.cpp \
     polygonwindow.cpp
 
 HEADERS  += openglwindow.h \
-    trianglewindow.h \
     polygonwindow.h
 
 RESOURCES += \

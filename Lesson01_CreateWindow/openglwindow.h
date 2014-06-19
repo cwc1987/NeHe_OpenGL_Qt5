@@ -4,14 +4,12 @@
 #include <QPainter>
 #include <QWindow>
 #include <QOpenGLFunctions>
-#include <QOpenGLPaintDevice>
 #include <QCoreApplication>
-#include <QOpenGLShaderProgram>
-#include <QScreen>
 #include <QEvent>
 #include <QResizeEvent>
 #include <GL/glu.h>
 #include <QKeyEvent>
+#include <QTextStream>
 
 class OpenGLWindow : public QWindow, protected QOpenGLFunctions
 {
@@ -21,6 +19,8 @@ public:
     ~OpenGLWindow();
 
     void setAnimating(bool animating);
+
+    QString loadShaderFile(const QString &filePath);
 public slots:
     void renderLater();
 
@@ -44,13 +44,6 @@ private:
     bool m_animating;
     QOpenGLContext *m_context;
     bool m_show_full_screen;
-
-    GLuint m_posAttr;
-    GLuint m_colAttr;
-    GLuint m_matrixUniform;
-
-    QOpenGLShaderProgram *m_program;
-    int m_frame;
 };
 
 #endif // OPENGLWINDOW_H

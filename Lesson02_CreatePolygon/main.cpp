@@ -1,6 +1,5 @@
 #include <QApplication>
 #include <QSurfaceFormat>
-#include "trianglewindow.h"
 #include "polygonwindow.h"
 
 int main(int argc, char *argv[])
@@ -10,10 +9,9 @@ int main(int argc, char *argv[])
     QSurfaceFormat format;
     format.setSamples(16);
 
-    OpenGLWindow window;
+    PolygonWindow window;
     window.setFormat(format);
     window.show();
-    window.setAnimating(true);
-
+    window.setAnimating(false);
     return app.exec();
 }

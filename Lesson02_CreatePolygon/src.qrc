@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>shader/triangle.frag</file>
-        <file>shader/triangle.vert</file>
-        <file>shader/rect.frag</file>
-        <file>shader/rect.vert</file>
+        <file>shader/fragshader.glsl</file>
+        <file>shader/vertshader.glsl</file>
     </qresource>
 </RCC>

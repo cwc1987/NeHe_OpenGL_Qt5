@@ -38,11 +38,9 @@ void OpenGLWindow::resizeGL(int w, int h)
         h = 1;
     }
     glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0f,(GLfloat)w/(GLfloat)h,0.1f,100.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    m_projection.setToIdentity();
+    m_projection.perspective(45, (float)w/float(h), 1, 1000);
+    m_modelview.setToIdentity();
 }
 
 void OpenGLWindow::setAnimating(bool animating)
@@ -52,22 +50,6 @@ void OpenGLWindow::setAnimating(bool animating)
     {
         renderLater();
     }
-}
-
-QString OpenGLWindow::loadShaderFile(const QString &filePath)
-{
-    QString content;
-    if(!filePath.isEmpty())
-    {
-        QFile shaderFile(filePath);
-        if(shaderFile.open(QIODevice::ReadOnly))
-        {
-            QTextStream stream(&shaderFile);
-            content = stream.readAll();
-            shaderFile.close();
-        }
-    }
-    return content;
 }
 
 void OpenGLWindow::renderLater()
@@ -99,6 +81,8 @@ void OpenGLWindow::renderNow()
     {
         initializeOpenGLFunctions();
         initialize();
+        const qreal retinaScale = devicePixelRatio();
+        resizeGL(width()*retinaScale, height()*retinaScale);
     }
     render();
 
@@ -134,7 +118,9 @@ void OpenGLWindow::resizeEvent(QResizeEvent *event)
 {
     int w = event->size().width();
     int h = event->size().height();
-    resizeGL(w, h);
+    const qreal retinaScale = devicePixelRatio();
+    resizeGL(w*retinaScale, h*retinaScale);
+    renderNow();
     QWindow::resizeEvent(event);
 }
 
@@ -142,7 +128,7 @@ void OpenGLWindow::keyPressEvent(QKeyEvent *event)
 {
     switch(event->key())
     {
-        case Qt::Key_F2:
+        case Qt::Key_F1:
         {
             m_show_full_screen = !m_show_full_screen;
             if(m_show_full_screen)

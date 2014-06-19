@@ -10,6 +10,7 @@
 #include <GL/glu.h>
 #include <QKeyEvent>
 #include <QTextStream>
+#include <QMatrix4x4>
 
 class OpenGLWindow : public QWindow, protected QOpenGLFunctions
 {
@@ -19,8 +20,6 @@ public:
     ~OpenGLWindow();
 
     void setAnimating(bool animating);
-
-    QString loadShaderFile(const QString &filePath);
 public slots:
     void renderLater();
 
@@ -39,6 +38,10 @@ protected:
     virtual void initialize();
 
     virtual void resizeGL(int w, int h);
+
+    QMatrix4x4 m_projection;
+
+    QMatrix4x4 m_modelview;
 private:
     bool m_update_pending;
     bool m_animating;

@@ -16,12 +16,7 @@ protected:
     void initialize();
     void render();
 private:
-    GLuint m_posAttr;
-    GLuint m_matrixUniform;
-    GLuint m_colAttr;
-
     QOpenGLShaderProgram *m_program;
-    int m_frame;
 };
 
 #endif // POLYGONWINDOW_H

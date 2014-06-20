@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shader/fragshader.glsl</file>
+        <file>shader/vertshader.glsl</file>
+        <file>image/Crate.bmp</file>
+    </qresource>
+</RCC>

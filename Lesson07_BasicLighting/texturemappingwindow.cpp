@@ -31,25 +31,25 @@ void TextureMappingWindow::initialize()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
     glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
     glEnable(GL_LIGHT0);
-    if(!m_light)
-    {
-        glDisable(GL_LIGHTING);
-    }
-    else
-    {
-        glEnable(GL_LIGHTING);
-    }
+    glEnable(GL_LIGHTING);
+//    if(!m_light)
+//    {
+//        glDisable(GL_LIGHTING);
+//    }
+//    else
+//    {
+//        glEnable(GL_LIGHTING);
+//    }
 }
 
 void TextureMappingWindow::render()
 {
     m_program->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    m_modelview.setToIdentity();
-    m_modelview.translate(0.0f, 0.0f, m_z);
-    m_modelview.rotate(m_xrot, 1.0, 0.0, 0.0);
-    m_modelview.rotate(m_yrot, 0.0, 1.0, 0.0);
-    m_program->setUniformValue("mvp_matrix", m_projection * m_modelview);
+    glLoadIdentity();
+    glTranslatef(0.0f,0.0f,m_z);
+    glRotatef(m_xrot,1.0f,0.0f,0.0f);
+    glRotatef(m_yrot,0.0f,1.0f,0.0f);
     glBindTexture(GL_TEXTURE_2D, m_texture[m_filter]);
     GLuint textcoord = m_program->attributeLocation("a_texcoord");
     glBegin(GL_QUADS);

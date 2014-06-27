@@ -4,10 +4,11 @@ precision mediump float;
 #endif
 
 attribute vec4 colAttr;
+attribute vec4 posAttr;
 varying vec4 col;
-uniform mat4 mvp_matrix;
+uniform mat4 mvpMatrix;
 void main()
 {
     col = colAttr;
-    gl_Position = mvp_matrix * gl_Vertex;
+    gl_Position = mvpMatrix * posAttr;
 }

@@ -15,7 +15,13 @@ protected:
     void initialize();
     void render();
 private:
+    void initGeometry();
+private:
     QOpenGLShaderProgram *m_program;
+    GLuint m_colAttr;
+    GLuint m_posAttr;
+    GLuint m_vboIds[4];
+
     GLfloat	m_rtri;
     GLfloat	m_rquad;
 };

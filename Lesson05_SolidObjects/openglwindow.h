@@ -7,7 +7,6 @@
 #include <QCoreApplication>
 #include <QEvent>
 #include <QResizeEvent>
-#include <GL/glu.h>
 #include <QKeyEvent>
 #include <QTextStream>
 #include <QMatrix4x4>

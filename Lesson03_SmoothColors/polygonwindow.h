@@ -16,9 +16,13 @@ protected:
     void initialize();
     void render();
 private:
-    void initVAO();
+    void initGeometry();
+private:
     QOpenGLShaderProgram *m_program;
-    GLuint m_vertexbuffer[2];
+    GLuint m_posAttr;
+    GLuint m_colAttr;
+
+    GLuint m_vboIds[4];
 };
 
 #endif // POLYGONWINDOW_H

@@ -21,7 +21,7 @@ private:
     QOpenGLShaderProgram *m_program;
     GLuint m_posAttr;
 
-    GLuint vboIds[2];
+    GLuint m_vboIds[2];
 };
 
 #endif // POLYGONWINDOW_H

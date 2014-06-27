@@ -27,68 +27,45 @@ void TextureMappingWindow::render()
 {
     m_program->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    m_modelview.setToIdentity();
-    m_modelview.translate(0.0f, 0.0f, -5.0f);
-    m_modelview.rotate(m_xrot, 1.0, 0.0, 0.0);
-    m_modelview.rotate(m_yrot, 0.0, 1.0, 0.0);
-    m_modelview.rotate(m_zrot, 0.0, 0.0, 1.0);
-    m_program->setUniformValue("mvp_matrix", m_projection * m_modelview);
+    glLoadIdentity();
+    glTranslatef(0.0f, 0.0f, -5.0f);
+    glRotatef(m_xrot, 1.0, 0.0, 0.0);
+    glRotatef(m_yrot, 0.0, 1.0, 0.0);
+    glRotatef(m_zrot, 0.0, 0.0, 1.0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    GLuint textcoord = m_program->attributeLocation("a_texcoord");
     glBegin(GL_QUADS);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f,  1.0f);
+            // 前面
+            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的左上
+            // 后面
+            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的左下
+            // 顶面
+            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
+            // 底面
+            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
 
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f, -1.0f);
+            // 右面
+            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
 
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f(-1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f( 1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f, -1.0f);
-
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f( 1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f,  1.0f);
-
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f,  1.0f);
-
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f, -1.0f);
+            // 左面
+            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
     glEnd();
     m_program->release();
     m_xrot+=0.3f;

@@ -30,88 +30,57 @@ void TextureMappingWindow::initialize()
     glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
     glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
-//    if(!m_light)
-//    {
-//        glDisable(GL_LIGHTING);
-//    }
-//    else
-//    {
-//        glEnable(GL_LIGHTING);
-//    }
 }
 
 void TextureMappingWindow::render()
 {
     m_program->bind();
+    m_program->setUniformValue("enableLight", (GLuint)m_light);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     glTranslatef(0.0f,0.0f,m_z);
     glRotatef(m_xrot,1.0f,0.0f,0.0f);
     glRotatef(m_yrot,0.0f,1.0f,0.0f);
     glBindTexture(GL_TEXTURE_2D, m_texture[m_filter]);
-    GLuint textcoord = m_program->attributeLocation("a_texcoord");
     glBegin(GL_QUADS);
-            glNormal3f( 0.0f, 0.0f, 1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f,  1.0f);
+            // 前面
+            glNormal3f( 0.0f, 0.0f, 1.0f);					// 法线指向观察者
+            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的左上
+            // 后面
+            glNormal3f( 0.0f, 0.0f,-1.0f);					// 法线背向观察者
+            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的左下
+            // 顶面
+            glNormal3f( 0.0f, 1.0f, 0.0f);					// 法线向上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
+            // 底面
+            glNormal3f( 0.0f,-1.0f, 0.0f);					// 法线朝下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
 
-            glNormal3f( 0.0f, 0.0f,-1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f, -1.0f);
+            // 右面
+            glNormal3f( 1.0f, 0.0f, 0.0f);					// 法线朝右
+            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的左上
+            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
 
-            glNormal3f( 0.0f, 1.0f, 0.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f(-1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f( 1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f, -1.0f);
-
-            glNormal3f( 0.0f,-1.0f, 0.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f( 1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f,  1.0f);
-
-            glNormal3f( 1.0f, 0.0f, 0.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f( 1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f( 1.0f, -1.0f,  1.0f);
-
-            glNormal3f(-1.0f, 0.0f, 0.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f, -1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 0.0f);
-            glVertex3f(-1.0f, -1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 1.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f,  1.0f);
-            glVertexAttrib2f(textcoord, 0.0f, 1.0f);
-            glVertex3f(-1.0f,  1.0f, -1.0f);
+            // 左面
+            glNormal3f(-1.0f, 0.0f, 0.0f);					// 法线朝左
+            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的左下
+            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
+            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的右上
+            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
     glEnd();
     m_program->release();
     m_xrot+=m_xspeed;
@@ -125,14 +94,6 @@ void TextureMappingWindow::keyPressEvent(QKeyEvent *event)
         case Qt::Key_L:
         {
             m_light = !m_light;
-            if(!m_light)
-            {
-                glDisable(GL_LIGHTING);
-            }
-            else
-            {
-                glEnable(GL_LIGHTING);
-            }
             break;
         }
         case Qt::Key_F:
@@ -185,7 +146,6 @@ void TextureMappingWindow::loadGLTexture()
     image = image.mirrored();
 
     glGenTextures(3, &m_texture[0]);
-
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -211,4 +171,5 @@ void TextureMappingWindow::loadShader()
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/vertshader.glsl");
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader/fragshader.glsl");
     m_program->link();
+
 }

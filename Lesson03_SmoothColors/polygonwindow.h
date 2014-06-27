@@ -16,7 +16,9 @@ protected:
     void initialize();
     void render();
 private:
+    void initVAO();
     QOpenGLShaderProgram *m_program;
+    GLuint m_vertexbuffer[2];
 };
 
 #endif // POLYGONWINDOW_H

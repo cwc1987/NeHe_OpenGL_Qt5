@@ -4,6 +4,7 @@
 #include <QOpenGLShaderProgram>
 #include <QGLShader>
 #include <QScreen>
+#include <QDebug>
 #include "openglwindow.h"
 
 class PolygonWindow : public OpenGLWindow
@@ -14,10 +15,13 @@ public:
 protected:
     void initialize();
     void render();
-private: 
-    void initVAO();
+private:
+    void initGeometry();
+private:
     QOpenGLShaderProgram *m_program;
-    GLuint m_vertexbuffer[2];
+    GLuint m_posAttr;
+
+    GLuint vboIds[2];
 };
 
 #endif // POLYGONWINDOW_H

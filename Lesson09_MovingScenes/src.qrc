@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/Star.bmp</file>
+        <file>shader/fragshader.glsl</file>
+        <file>shader/vertshader.glsl</file>
+    </qresource>
+</RCC>

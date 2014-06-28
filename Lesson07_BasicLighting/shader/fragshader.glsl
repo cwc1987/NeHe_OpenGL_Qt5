@@ -3,29 +3,23 @@ precision mediump int;
 precision mediump float;
 #endif
 
+
 uniform sampler2D texture;
-uniform bool enableLight;
-varying vec3 lightDir,normal;
+uniform int textureModel;
+varying vec2 texCoord;
+varying vec4 frontColor;
 void main()
 {
-    if(enableLight)
-    {
-        vec3 ct,cf;
-        vec4 texel;
-        float intensity, at, af;
+    vec3 ct,cf;
+    vec4 texel;
+    float at,af;
 
-        intensity = max(dot(lightDir,normalize(normal)),0.0);
-        cf = intensity * (gl_FrontMaterial.diffuse).rgb + gl_FrontMaterial.ambient.rgb;
-        af = gl_FrontMaterial.diffuse.a;
+    cf = frontColor.rgb;
+    af = frontColor.a;
 
-        texel = texture2D(texture, gl_TexCoord[0].st);
-        ct = texel.rgb;
-        at = texel.a;
+    texel = texture2D(texture, texCoord);
+    ct = texel.rgb;
+    at = texel.a;
 
-        gl_FragColor = vec4(ct * cf, at * af);
-    }
-    else
-    {
-        gl_FragColor = texture2D(texture,gl_TexCoord[0].st);
-    }
+    gl_FragColor = vec4(ct * cf, at * af);
 }

@@ -19,15 +19,22 @@ private:
 
     void loadShader();
 private:
+    void initGeometry();
+private:
     QOpenGLShaderProgram *m_program;
+    GLuint m_posAttr;
+    GLuint m_texCoordAttr;
+    GLuint m_normalAttr;
+    GLuint m_vboIds[3];
+    GLuint m_texture[3];
+
     GLfloat m_xrot;
     GLfloat m_yrot;
-    GLfloat m_z;
     GLfloat m_xspeed;
     GLfloat m_yspeed;
-    GLuint m_texture[3];
-    GLuint m_filter;
+    GLfloat m_z;
     bool m_light;
+    GLuint m_filter;
 };
 
 #endif // TEXTUREMAPPINGWINDOW_H

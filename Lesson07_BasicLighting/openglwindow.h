@@ -7,10 +7,9 @@
 #include <QCoreApplication>
 #include <QEvent>
 #include <QResizeEvent>
-#include <GL/glu.h>
 #include <QKeyEvent>
 #include <QTextStream>
-#include <qmath.h>
+#include <QMatrix4x4>
 
 class OpenGLWindow : public QWindow, protected QOpenGLFunctions
 {
@@ -39,9 +38,9 @@ protected:
 
     virtual void resizeGL(int w, int h);
 
-    void qgluperspective(GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar);
+    QMatrix4x4 m_modelView;
 
-    void qgluMakeIdentityf(GLfloat m[16]);
+    QMatrix4x4 m_projection;
 private:
     bool m_update_pending;
     bool m_animating;

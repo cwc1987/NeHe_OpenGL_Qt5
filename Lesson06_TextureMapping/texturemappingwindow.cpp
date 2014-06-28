@@ -1,7 +1,7 @@
 #include "texturemappingwindow.h"
 
 TextureMappingWindow::TextureMappingWindow(QWindow *parent) :
-    OpenGLWindow(parent), m_xrot(0.0f), m_yrot(0.0f), m_zrot(0.0f), m_texture(-1)
+    OpenGLWindow(parent), m_texture(-1), m_xrot(0.0f), m_yrot(0.0f), m_zrot(0.0f)
 {
 }
 
@@ -12,61 +12,33 @@ TextureMappingWindow::~TextureMappingWindow()
 
 void TextureMappingWindow::initialize()
 {
+    initGeometry();
     loadShader();
     loadGLTexture();
     glEnable(GL_TEXTURE_2D);
-    glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-    glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 void TextureMappingWindow::render()
 {
     m_program->bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -5.0f);
-    glRotatef(m_xrot, 1.0, 0.0, 0.0);
-    glRotatef(m_yrot, 0.0, 1.0, 0.0);
-    glRotatef(m_zrot, 0.0, 0.0, 1.0);
+    m_modelView.setToIdentity();
+    m_modelView.translate(0.0f, 0.0f, -5.0f);
+    m_modelView.rotate(m_xrot, 1.0, 0.0, 0.0);
+    m_modelView.rotate(m_yrot, 0.0, 1.0, 0.0);
+    m_modelView.rotate(m_zrot, 0.0, 0.0, 1.0);
+    m_program->setUniformValue("mvpMatrix", m_projection * m_modelView);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
+    m_program->enableAttributeArray(m_posAttr);
+    m_program->setAttributeBuffer(m_posAttr, GL_FLOAT, 0, 3);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
+    m_program->enableAttributeArray(m_texCoordAttr);
+    m_program->setAttributeArray(m_texCoordAttr, GL_FLOAT, 0, 2);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    glBegin(GL_QUADS);
-            // 前面
-            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
-            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
-            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的右上
-            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的左上
-            // 后面
-            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的右下
-            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
-            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
-            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的左下
-            // 顶面
-            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
-            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的左下
-            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的右下
-            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
-            // 底面
-            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的右上
-            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的左上
-            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
-            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
-
-            // 右面
-            glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// 纹理和四边形的右下
-            glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// 纹理和四边形的右上
-            glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// 纹理和四边形的左上
-            glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// 纹理和四边形的左下
-
-            // 左面
-            glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// 纹理和四边形的左下
-            glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// 纹理和四边形的右下
-            glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// 纹理和四边形的右上
-            glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// 纹理和四边形的左上
-    glEnd();
+    glDrawArrays(GL_QUADS, 0, 34);
     m_program->release();
     m_xrot+=0.3f;
     m_yrot+=0.2f;
@@ -93,4 +65,68 @@ void TextureMappingWindow::loadShader()
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/vertshader.glsl");
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader/fragshader.glsl");
     m_program->link();
+    m_posAttr = m_program->attributeLocation("posAttr");
+    m_texCoordAttr = m_program->attributeLocation("texCoordAttr");
+}
+
+void TextureMappingWindow::initGeometry()
+{
+    glGenBuffers(2, &m_vboIds[0]);
+    GLfloat quadVertices[] = {
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f
+    };
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+
+    GLfloat quadTexCoords[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f
+    };
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadTexCoords), quadTexCoords, GL_STATIC_DRAW);
 }

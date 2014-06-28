@@ -39,6 +39,7 @@ void TextureMappingWindow::render()
     m_program->setUniformValue("lightModelAmbient", LightModelAmbient);
     m_program->setUniformValue("materialDiffuse", MaterialDiffuse);
     m_program->setUniformValue("materialAmbient", MaterialAmbient);
+    m_program->setUniformValue("enableLight", m_light);
 
     m_modelView.setToIdentity();
     m_modelView.translate(0.0f, 0.0f, m_z);

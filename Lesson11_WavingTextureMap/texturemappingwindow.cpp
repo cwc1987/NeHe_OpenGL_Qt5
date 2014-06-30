@@ -20,9 +20,8 @@ void TextureMappingWindow::initialize()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepthf(1.0f);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LEQUAL);
-//    glPolygonMode( GL_BACK, GL_FILL );
-//    glPolygonMode( GL_FRONT, GL_LINE );
 }
 
 void TextureMappingWindow::render()
@@ -64,8 +63,10 @@ void TextureMappingWindow::render()
             m_program->setAttributeArray(m_posAttr, GL_FLOAT, vertexs, 3);
             m_program->enableAttributeArray(m_texCoordAttr);
             m_program->setAttributeArray(m_texCoordAttr, GL_FLOAT, texCoords, 2);
-//            glDrawArrays(GL_LINE_LOOP, 0, 4);
+            glCullFace(GL_BACK);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+            glCullFace(GL_FRONT);
+            glDrawArrays(GL_LINE_LOOP, 0, 4);
         }
     }
     m_program->release();
@@ -86,7 +87,6 @@ void TextureMappingWindow::render()
 
 void TextureMappingWindow::loadGLTexture()
 {
-
     QImage image(":/image/Tim.bmp");
     image = image.convertToFormat(QImage::Format_RGB888);
     image = image.mirrored();

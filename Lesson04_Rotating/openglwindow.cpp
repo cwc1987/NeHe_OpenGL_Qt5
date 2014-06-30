@@ -23,9 +23,7 @@ void OpenGLWindow::render()
 
 void OpenGLWindow::initialize()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glDepthFunc(GL_LEQUAL);
-    glEnable(GL_DEPTH_TEST);
+
 }
 
 void OpenGLWindow::resizeGL(int w, int h)

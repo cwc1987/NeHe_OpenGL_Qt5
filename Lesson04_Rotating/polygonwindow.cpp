@@ -9,6 +9,7 @@ void PolygonWindow::initialize()
 {
     initGeometry();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepthf(1.0f);
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_DEPTH_TEST);
 

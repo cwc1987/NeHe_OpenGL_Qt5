@@ -4,11 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+target.path = /home/pi/NeHe_OpenGL_Qt5
 TARGET = Lesson09_MovingScenes
+INSTALLS += target
 TEMPLATE = app
 
 

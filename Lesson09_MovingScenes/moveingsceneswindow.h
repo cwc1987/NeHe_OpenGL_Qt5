@@ -2,6 +2,7 @@
 #define MOVEINGSCENESWINDOW_H
 
 #include <QOpenGLShaderProgram>
+#include <QDebug>
 #include "openglwindow.h"
 
 class MoveingScenesWindow : public OpenGLWindow

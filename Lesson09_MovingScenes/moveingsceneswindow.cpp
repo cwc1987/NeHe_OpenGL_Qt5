@@ -17,9 +17,14 @@ void MoveingScenesWindow::initialize()
     initGeometry();
     loadShader();
     loadGLTexture();
-    glEnable(GL_TEXTURE_2D);
+
+    glClearDepthf(1.0);
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE,GL_SRC_ALPHA,GL_ONE);
 }
 
@@ -39,16 +44,17 @@ void MoveingScenesWindow::render()
         m_modelView.rotate(-m_tilt, 1.0f, 0.0f, 0.0f);
 
         GLfloat quadsVertexs[] = {
-            -1.0f,-1.0f, 0.0f,
-             1.0f,-1.0f, 0.0f,
-             1.0f, 1.0f, 0.0f,
-            -1.0f, 1.0f, 0.0f
+            1.0, 1.0, 0.0,
+           -1.0, 1.0, 0.0,
+            1.0,-1.0, 0.0,
+           -1.0,-1.0, 0.0
+
         };
         GLfloat texCoords[] = {
-            0.0f, 0.0f,
-            1.0f, 0.0f,
-            1.0f, 1.0f,
-            0.0f, 1.0f
+            1.0, 1.0,
+            0.0, 1.0,
+            1.0, 0.0,
+            0.0, 0.0
         };
 
         m_program->setUniformValue("mvpMatrix", m_projection * m_modelView);
@@ -59,21 +65,22 @@ void MoveingScenesWindow::render()
             m_program->setAttributeArray(m_posAttr, GL_FLOAT, quadsVertexs, 3);
             m_program->enableAttributeArray(m_texCoordAttr);
             m_program->setAttributeArray(m_texCoordAttr, GL_FLOAT, texCoords, 2);
-            glDrawArrays(GL_QUADS, 0, 4);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
 
         m_modelView.rotate(m_spin, 0.0f, 0.0f, 1.0f);
         m_program->setUniformValue("mvpMatrix", m_projection * m_modelView);
         m_program->setUniformValue("starColor", m_stars[i].r, m_stars[i].g, m_stars[i].b, 1.0f);
+
         m_program->enableAttributeArray(m_posAttr);
         m_program->setAttributeArray(m_posAttr, GL_FLOAT, quadsVertexs, 3);
         m_program->enableAttributeArray(m_texCoordAttr);
         m_program->setAttributeArray(m_texCoordAttr, GL_FLOAT, texCoords, 2);
-        glDrawArrays(GL_QUADS, 0, 4);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-        m_spin+=0.0001f;
+        m_spin+=0.01f;
         m_stars[i].angle+=float(i)/iend;
-        m_stars[i].dist-=0.0001f;
+        m_stars[i].dist-=0.01f;
         if (m_stars[i].dist<0.0f)
         {
             m_stars[i].dist+=5.0f;
@@ -123,11 +130,13 @@ void MoveingScenesWindow::loadGLTexture()
     QImage image(":/image/Star.bmp");
     image = image.convertToFormat(QImage::Format_RGB888);
     image = image.mirrored();
+
     glGenTextures(1, &m_texture);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, image.width(), image.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(),
+                 0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void MoveingScenesWindow::loadShader()

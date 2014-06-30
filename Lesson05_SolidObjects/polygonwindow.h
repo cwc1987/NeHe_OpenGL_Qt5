@@ -9,6 +9,7 @@ class PolygonWindow : public OpenGLWindow
     Q_OBJECT
 public:
     explicit PolygonWindow(QWindow *parent = 0);
+    ~PolygonWindow();
 protected:
     void initialize();
     void render();

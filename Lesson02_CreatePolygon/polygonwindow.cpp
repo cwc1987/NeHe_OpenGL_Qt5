@@ -5,6 +5,11 @@ PolygonWindow::PolygonWindow(QWindow *parent) :
 {
 }
 
+PolygonWindow::~PolygonWindow()
+{
+    glDeleteBuffers(2,&m_vboIds[0]);
+}
+
 void PolygonWindow::initialize()
 {
     initGeometry();

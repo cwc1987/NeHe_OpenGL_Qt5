@@ -14,6 +14,7 @@ TextureMappingWindow::TextureMappingWindow(QWindow *parent) :
 TextureMappingWindow::~TextureMappingWindow()
 {
     glDeleteTextures(1, &m_texture);
+    glDeleteBuffers(2, &m_vboIds[0]);
 }
 
 void TextureMappingWindow::initialize()

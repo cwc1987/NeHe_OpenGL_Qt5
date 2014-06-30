@@ -54,8 +54,8 @@ void PolygonWindow::initGeometry()
 
     GLfloat quadVertices[] = {
          1.0f, 1.0f, 0.0f,
-         1.0f,-1.0f, 0.0f,
         -1.0f, 1.0f, 0.0f,
+         1.0f,-1.0f, 0.0f,
         -1.0f,-1.0f, 0.0f
     };
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);

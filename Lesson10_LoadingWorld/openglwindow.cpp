@@ -23,9 +23,6 @@ void OpenGLWindow::render()
 
 void OpenGLWindow::initialize()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
 }
 
 void OpenGLWindow::resizeGL(int w, int h)
@@ -36,7 +33,7 @@ void OpenGLWindow::resizeGL(int w, int h)
     }
     glViewport(0, 0, w, h);
     m_projection.setToIdentity();
-    m_projection.perspective(45.0f, (float)w/(float)h, 0.1f, 100.0f);
+    m_projection.perspective(45.0, (float)w/(float)h, 0.1, 1000);
     m_modelView.setToIdentity();
 }
 

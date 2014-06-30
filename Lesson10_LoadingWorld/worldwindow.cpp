@@ -28,12 +28,15 @@ void WorldWindow::initialize()
     loadShader();
     loadGLTexture();
     setupWorld();
-    glEnable(GL_TEXTURE_2D);
-    glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE,GL_SRC_ALPHA,GL_ONE);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepthf(1.0);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
     glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+    glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE,GL_SRC_ALPHA,GL_ONE);
 }
 
 void WorldWindow::render()
@@ -219,21 +222,21 @@ void WorldWindow::loadGLTexture()
     glGenTextures(3, &m_texture[0]);
 
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, image.width(), image.height(),
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(),
                  0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glBindTexture(GL_TEXTURE_2D, m_texture[1]);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, image.width(), image.height(),
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(),
                  0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glBindTexture(GL_TEXTURE_2D, m_texture[2]);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, image.width(), image.height(),
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(),
                  0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     glGenerateMipmap(GL_TEXTURE_2D);
 }

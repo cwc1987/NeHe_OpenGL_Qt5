@@ -40,7 +40,7 @@ protected:
 
     QMatrix4x4 m_projection;
 
-    QMatrix4x4 m_modelview;
+    QMatrix4x4 m_modelView;
 private:
     bool m_update_pending;
     bool m_animating;

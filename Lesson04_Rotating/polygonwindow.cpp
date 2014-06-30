@@ -26,10 +26,10 @@ void PolygonWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_program->bind();
 
-    m_modelview.setToIdentity();
-    m_modelview.translate(-1.5f, 0.0f, -6.0f);
-    m_modelview.rotate(m_rtri, 0.0f, 1.0f, 0.0f);
-    m_program->setUniformValue("mvpMatrix", m_projection * m_modelview);
+    m_modelView.setToIdentity();
+    m_modelView.translate(-1.5f, 0.0f, -6.0f);
+    m_modelView.rotate(m_rtri, 0.0f, 1.0f, 0.0f);
+    m_program->setUniformValue("mvpMatrix", m_projection * m_modelView);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
     m_program->enableAttributeArray(m_posAttr);
     m_program->setAttributeBuffer(m_posAttr, GL_FLOAT, 0, 3);
@@ -38,10 +38,10 @@ void PolygonWindow::render()
     m_program->setAttributeBuffer(m_colAttr, GL_FLOAT, 0, 3);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    m_modelview.setToIdentity();
-    m_modelview.translate(1.5f, 0.0f, -6.0f);
-    m_modelview.rotate(m_rquad, 1.0f, 0.0f, 0.0f);
-    m_program->setUniformValue("mvpMatrix", m_projection * m_modelview);
+    m_modelView.setToIdentity();
+    m_modelView.translate(1.5f, 0.0f, -6.0f);
+    m_modelView.rotate(m_rquad, 1.0f, 0.0f, 0.0f);
+    m_program->setUniformValue("mvpMatrix", m_projection * m_modelView);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[2]);
     m_program->enableAttributeArray(m_posAttr);
     m_program->setAttributeBuffer(m_posAttr, GL_FLOAT, 0, 3);

@@ -1,14 +1,12 @@
 #ifndef OPENGLWINDOW_H
 #define OPENGLWINDOW_H
 
-#include <QPainter>
 #include <QWindow>
 #include <QOpenGLFunctions>
 #include <QCoreApplication>
 #include <QEvent>
 #include <QResizeEvent>
 #include <QKeyEvent>
-#include <QTextStream>
 #include <QMatrix4x4>
 
 class OpenGLWindow : public QWindow, protected QOpenGLFunctions

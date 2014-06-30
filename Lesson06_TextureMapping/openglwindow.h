@@ -1,14 +1,12 @@
 #ifndef OPENGLWINDOW_H
 #define OPENGLWINDOW_H
 
-#include <QPainter>
 #include <QWindow>
 #include <QOpenGLFunctions>
 #include <QCoreApplication>
 #include <QEvent>
 #include <QResizeEvent>
 #include <QKeyEvent>
-#include <QTextStream>
 #include <QMatrix4x4>
 
 class OpenGLWindow : public QWindow, protected QOpenGLFunctions
@@ -38,9 +36,9 @@ protected:
 
     virtual void resizeGL(int w, int h);
 
-    QMatrix4x4 m_modelView;
-
     QMatrix4x4 m_projection;
+
+    QMatrix4x4 m_modelView;
 private:
     bool m_update_pending;
     bool m_animating;

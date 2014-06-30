@@ -2,8 +2,6 @@
 #define POLYGONWINDOW_H
 
 #include <QOpenGLShaderProgram>
-#include <QGLShader>
-#include <QScreen>
 #include "openglwindow.h"
 
 class PolygonWindow : public OpenGLWindow

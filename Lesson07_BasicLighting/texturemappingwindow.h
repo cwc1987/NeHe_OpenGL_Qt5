@@ -25,7 +25,7 @@ private:
     GLuint m_posAttr;
     GLuint m_texCoordAttr;
     GLuint m_normalAttr;
-    GLuint m_vboIds[3];
+    GLuint m_vboIds[2];
     GLuint m_texture[3];
 
     GLfloat m_xrot;

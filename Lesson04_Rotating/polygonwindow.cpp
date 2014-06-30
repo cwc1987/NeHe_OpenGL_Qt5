@@ -47,7 +47,7 @@ void PolygonWindow::render()
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[3]);
     m_program->enableAttributeArray(m_colAttr);
     m_program->setAttributeBuffer(m_colAttr, GL_FLOAT, 0, 3);
-    glDrawArrays(GL_QUADS, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     m_program->release();
     m_rtri+=0.2f;
     m_rquad-=0.15f;
@@ -73,10 +73,10 @@ void PolygonWindow::initGeometry()
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangleColors), triangleColors, GL_STATIC_DRAW);
 
     GLfloat quadVertices[] = {
-        -1.0f, 1.0f, 0.0f,
-         1.0f, 1.0f, 0.0f,
-         1.0f,-1.0f, 0.0f,
-        -1.0f,-1.0f, 0.0f
+        1.0f, 1.0f, 0.0f,
+        1.0f,-1.0f, 0.0f,
+       -1.0f, 1.0f, 0.0f,
+       -1.0f,-1.0f, 0.0f
     };
     glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);

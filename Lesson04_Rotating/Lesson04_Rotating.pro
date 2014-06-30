@@ -8,7 +8,9 @@ QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+target.path = /home/pi/NeHe_OpenGL_Qt5
 TARGET = Lesson04_Rotating
+INSTALLS += target
 TEMPLATE = app
 
 

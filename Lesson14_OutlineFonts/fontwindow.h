@@ -5,7 +5,6 @@
 #include <QApplication>
 #include <freetype2/ft2build.h>
 #include <freetype2/freetype.h>
-#include <freetype2/config/ftheader.h>
 #include <QtMath>
 #include "openglwindow.h"
 

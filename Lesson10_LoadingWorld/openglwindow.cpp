@@ -31,7 +31,10 @@ void OpenGLWindow::resizeGL(int w, int h)
     {
         h = 1;
     }
-    glViewport(0, 0, w, h);
+    if (m_context)
+    {
+        glViewport(0, 0, w, h);
+    }
     m_projection.setToIdentity();
     m_projection.perspective(45.0, (float)w/(float)h, 0.1, 1000);
     m_modelView.setToIdentity();
